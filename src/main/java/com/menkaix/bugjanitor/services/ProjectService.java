@@ -34,13 +34,17 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Project update(String id, Project projectDetails) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+    public Project update(String projectJson) {
 
-        project.setProjectName(projectDetails.getProjectName());
-        project.setProjectCode(projectDetails.getProjectCode());
-        project.setDescription(projectDetails.getDescription());
+        // TODO
+        Project projectDetails = null;
+        Project project = projectRepository.findById(projectDetails.getId())
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + projectDetails.getId()));
+
+                // TODO
+        // project.setProjectName(projectDetails.getProjectName());
+        // project.setProjectCode(projectDetails.getProjectCode());
+        // project.setDescription(projectDetails.getDescription());
 
         return projectRepository.save(project);
     }

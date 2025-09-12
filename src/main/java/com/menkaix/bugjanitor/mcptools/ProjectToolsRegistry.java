@@ -24,29 +24,29 @@ public class ProjectToolsRegistry {
 
    
     @Tool(name = "create-project", description = "Creates a project")
-    public Project createProject(Project project) {
-        return projectServiceTools.createProject(project);
+    public String createProject(String projectJson) {
+        return projectServiceTools.createProject(projectJson).toString();
     }
 
     @Tool(name = "find-project-by-id", description = "Finds a project by its ID")
-    public Optional<Project> findProjectById(String id) {
-        return projectServiceTools.findProjectById(id);
+    public String findProjectById(String id) {
+        return projectServiceTools.findProjectById(id).toString();
     }
 
     @Tool(name = "update-project", description = "Updates a project")
-    public Project updateProject(String id, Project projectDetails) {
-        return projectServiceTools.updateProject(id, projectDetails);
+    public String updateProject(String projectDetails) {
+        return projectServiceTools.updateProject(projectDetails).toString();
     }
 
     @Tool(name = "delete-project", description = "Deletes a project")
-    public void deleteProject(String id) {
-        projectServiceTools.deleteProject(id);
+    public String deleteProject(String id) {
+        return projectServiceTools.deleteProject(id).toString();
     }
 
-    @Tool(name = "find-projects", description = "Finds projects with pagination, search, and filter options")
-    public Page<Project> findProjects(Pageable pageable, String search, String filter) {
-        return projectServiceTools.findAllProjects(pageable, search, filter);
-    }
+    // @Tool(name = "find-projects", description = "Finds projects with pagination, search, and filter options")
+    // public String findProjects(Pageable pageable, String search, String filter) {
+    //     return projectServiceTools.findAllProjects(pageable, search, filter);
+    // }
 
 
 }

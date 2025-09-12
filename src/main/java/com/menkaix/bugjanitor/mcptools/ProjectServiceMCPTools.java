@@ -22,7 +22,9 @@ public class ProjectServiceMCPTools {
         this.projectService = projectService;
     }
 
-    public Project createProject(Project project) {
+    public Project createProject(String projectJson) {
+        //TODO
+        Project project = null ;
         return projectService.create(project);
     }
 
@@ -30,12 +32,18 @@ public class ProjectServiceMCPTools {
         return projectService.findById(id);
     }
 
-    public Project updateProject(String id, Project projectDetails) {
-        return projectService.update(id, projectDetails);
+    public Project updateProject(String projectDetails) {
+        
+        return projectService.update(projectDetails);
     }
 
-    public void deleteProject(String id) {
-        projectService.delete(id);
+    public String deleteProject(String id) {
+        try{
+            projectService.delete(id);
+            return "OK: "+id ;
+        }catch(Exception e){
+            return e.getMessage() ;
+        }
     }
 
     public Page<Project> findAllProjects(Pageable pageable, String search, String filter) {
