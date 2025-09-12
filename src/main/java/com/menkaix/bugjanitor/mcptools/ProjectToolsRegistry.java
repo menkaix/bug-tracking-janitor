@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class MCPToolsRegistry {
+public class ProjectToolsRegistry {
 
     private final ProjectServiceMCPTools projectServiceTools ;
 
     @Autowired
-    public MCPToolsRegistry(ProjectServiceMCPTools tools){
+    public ProjectToolsRegistry(ProjectServiceMCPTools tools){
         projectServiceTools = tools ;
     }
 
