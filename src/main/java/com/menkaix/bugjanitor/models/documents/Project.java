@@ -12,6 +12,25 @@ public class Project {
     private String projectCode;
     private String description;
 
+    // Constructeur par défaut
+    public Project() {
+    }
+
+    // Constructeur avec paramètres
+    public Project(String projectName, String projectCode, String description) {
+        this.projectName = projectName;
+        this.projectCode = projectCode;
+        this.description = description;
+    }
+
+    // Constructeur complet
+    public Project(String id, String projectName, String projectCode, String description) {
+        this.id = id;
+        this.projectName = projectName;
+        this.projectCode = projectCode;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }
@@ -42,5 +61,15 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id='" + id + '\'' +
+                ", projectName='" + projectName + '\'' +
+                ", projectCode='" + projectCode + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

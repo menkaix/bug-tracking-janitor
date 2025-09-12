@@ -34,17 +34,20 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
-    public Project update(String projectJson) {
-
-        // TODO
-        Project projectDetails = null;
+    public Project update(Project projectDetails) {
         Project project = projectRepository.findById(projectDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + projectDetails.getId()));
 
-                // TODO
-        // project.setProjectName(projectDetails.getProjectName());
-        // project.setProjectCode(projectDetails.getProjectCode());
-        // project.setDescription(projectDetails.getDescription());
+        // Mettre à jour les champs
+        if (projectDetails.getProjectName() != null) {
+            project.setProjectName(projectDetails.getProjectName());
+        }
+        if (projectDetails.getProjectCode() != null) {
+            project.setProjectCode(projectDetails.getProjectCode());
+        }
+        if (projectDetails.getDescription() != null) {
+            project.setDescription(projectDetails.getDescription());
+        }
 
         return projectRepository.save(project);
     }
@@ -61,8 +64,7 @@ public class ProjectService {
             criteria.orOperator(
                     Criteria.where("projectName").regex(search, "i"),
                     Criteria.where("projectCode").regex(search, "i"),
-                    Criteria.where("description").regex(search, "i")
-            );
+                    Criteria.where("description").regex(search, "i"));
         }
 
         if (StringUtils.hasText(filter)) {
@@ -78,8 +80,7 @@ public class ProjectService {
         return PageableExecutionUtils.getPage(
                 mongoTemplate.find(query, Project.class),
                 pageable,
-                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Project.class)
-        );
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Project.class));
     }
-    
+
 }

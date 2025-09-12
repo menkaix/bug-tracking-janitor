@@ -15,7 +15,7 @@ import com.menkaix.bugjanitor.mcptools.ProjectToolsRegistry;
 public class MCPConfiguration {
 
     @Bean
-    public ToolCallbackProvider weatherTools(ProjectToolsRegistry projectToolServiceRegistry) {
-        return MethodToolCallbackProvider.builder().toolObjects(projectToolServiceRegistry).build();
+    public ToolCallbackProvider projectTools(ProjectToolsRegistry projectToolsRegistry) {
+        return MethodToolCallbackProvider.builder().toolObjects(projectToolsRegistry).build();
     }
 }
