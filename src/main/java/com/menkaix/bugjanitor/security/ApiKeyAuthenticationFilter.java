@@ -19,25 +19,25 @@ import java.util.Collections;
 public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String API_KEY_HEADER = "X-API-Key";
-    
+
     @Value("${app.security.api-key}")
     private String apiKey;
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         String providedApiKey = request.getHeader(API_KEY_HEADER);
-        
+
         if (providedApiKey != null && providedApiKey.equals(apiKey)) {
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    "api-user", 
-                    null, 
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_API"))
-            );
+                    "api-user",
+                    null,
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_API")));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        
+
         filterChain.doFilter(request, response);
     }
 }
