@@ -26,7 +26,7 @@ public class TaskToolsRegistry {
         this.jsonUtils = jsonUtils;
     }
 
-    @Tool(name = "create-task", description = "Creates a task from JSON. Expected format: {\"title\":\"name\",\"description\":\"desc\"}")
+    @Tool(name = "create-task", description = "Creates a task from JSON. Fields available: title, description, projectCode, deadLine (ISO-8601), status")
     public String createTask(String taskJson) {
         try {
             Task task = taskServiceTools.createTask(taskJson);
@@ -56,7 +56,7 @@ public class TaskToolsRegistry {
         }
     }
 
-    @Tool(name = "update-task", description = "Updates a task from JSON. Expected format: {\"id\":\"taskId\",\"title\":\"name\",\"description\":\"desc\"}")
+    @Tool(name = "update-task", description = "Updates a task from JSON. The ID is required. Fields available: title, description, projectCode, deadLine (ISO-8601), status, doneDate (ISO-8601)")
     public String updateTask(String taskDetails) {
         try {
             Task task = taskServiceTools.updateTask(taskDetails);

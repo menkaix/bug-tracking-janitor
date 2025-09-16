@@ -14,11 +14,13 @@ public class Task {
 
     private Instant creationDate ;
     private Instant updateDate ;
+    private Instant doneDate ;
 
     private Instant deadLine ;
 
     private String title ;
     private String description ;
+    private String status ;
 
     public String getId() {
         return id;
@@ -73,6 +75,22 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Instant getDoneDate() {
+        return doneDate;
+    }
+
+    public void setDoneDate(Instant doneDate) {
+        this.doneDate = doneDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
