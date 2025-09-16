@@ -1,6 +1,6 @@
 package com.menkaix.bugjanitor.models.documents;
 
-import java.time.Instant;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,11 +12,11 @@ public class Task {
     private String id ;
     private String projectCode ;
 
-    private Instant creationDate ;
-    private Instant updateDate ;
-    private Instant doneDate ;
+    private Date creationDate ;
+    private Date updateDate ;
+    private Date doneDate ;
 
-    private Instant deadLine ;
+    private Date deadLine ;
 
     private String title ;
     private String description ;
@@ -37,27 +37,27 @@ public class Task {
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
-    public Instant getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Instant creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Instant getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Instant updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Instant getDeadLine() {
+    public Date getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Instant deadLine) {
+    public void setDeadLine(Date deadLine) {
         this.deadLine = deadLine;
     }
 
@@ -77,11 +77,11 @@ public class Task {
         this.description = description;
     }
 
-    public Instant getDoneDate() {
+    public Date getDoneDate() {
         return doneDate;
     }
 
-    public void setDoneDate(Instant doneDate) {
+    public void setDoneDate(Date doneDate) {
         this.doneDate = doneDate;
     }
 

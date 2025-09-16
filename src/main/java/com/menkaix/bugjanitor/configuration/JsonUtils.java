@@ -11,7 +11,10 @@ public class JsonUtils {
 
     @Bean
     public Gson gson() {
-        return new GsonBuilder().setPrettyPrinting().create();
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .setPrettyPrinting()
+                .create();
     }
 
 }
