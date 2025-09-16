@@ -6,12 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.menkaix.bugjanitor.mcptools.ProjectToolsRegistry;
+import com.menkaix.bugjanitor.mcptools.TaskToolsRegistry;
 
 @Configuration
 public class MCPConfiguration {
 
     @Bean
-    public ToolCallbackProvider projectTools(ProjectToolsRegistry projectToolsRegistry) {
-        return MethodToolCallbackProvider.builder().toolObjects(projectToolsRegistry).build();
+    public ToolCallbackProvider projectTools(ProjectToolsRegistry projectToolsRegistry, TaskToolsRegistry taskToolsRegistry) {
+        return MethodToolCallbackProvider.builder().toolObjects(projectToolsRegistry, taskToolsRegistry).build();
     }
 }
