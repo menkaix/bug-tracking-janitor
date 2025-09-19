@@ -114,4 +114,26 @@ public class ProjectServiceMCPTools {
             throw new RuntimeException("Erreur lors de la recherche des projets: " + e.getMessage(), e);
         }
     }
+
+    public Optional<Project> findProjectByCode(String projectCode) {
+        try {
+            if (projectCode == null || projectCode.trim().isEmpty()) {
+                throw new IllegalArgumentException("Le code du projet ne peut pas être null ou vide");
+            }
+            return projectService.findByProjectCode(projectCode);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche du projet par code: " + e.getMessage(), e);
+        }
+    }
+
+    public Optional<Project> findProjectByName(String projectName) {
+        try {
+            if (projectName == null || projectName.trim().isEmpty()) {
+                throw new IllegalArgumentException("Le nom du projet ne peut pas être null ou vide");
+            }
+            return projectService.findByProjectName(projectName);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche du projet par nom: " + e.getMessage(), e);
+        }
+    }
 }
