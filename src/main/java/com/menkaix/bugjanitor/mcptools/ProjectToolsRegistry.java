@@ -112,4 +112,40 @@ public class ProjectToolsRegistry {
             return jsonUtils.toJson(error);
         }
     }
+
+    @Tool(name = "find-project-by-code", description = "Retrieves a project by its unique project code. Parameter: projectCode (string, required, project code identifier). Returns the complete project object if found, or an error message if no project exists with the specified code.")
+    public String findProjectByCode(String projectCode) {
+        try {
+            Optional<Project> project = projectServiceTools.findProjectByCode(projectCode);
+            if (project.isPresent()) {
+                return jsonUtils.toJson(project.get());
+            } else {
+                Map<String, String> result = new HashMap<>();
+                result.put("message", "Aucun projet trouvé avec le code: " + projectCode);
+                return jsonUtils.toJson(result);
+            }
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
+
+    @Tool(name = "find-project-by-name", description = "Retrieves a project by its project name. Parameter: projectName (string, required, project name). Returns the complete project object if found, or an error message if no project exists with the specified name.")
+    public String findProjectByName(String projectName) {
+        try {
+            Optional<Project> project = projectServiceTools.findProjectByName(projectName);
+            if (project.isPresent()) {
+                return jsonUtils.toJson(project.get());
+            } else {
+                Map<String, String> result = new HashMap<>();
+                result.put("message", "Aucun projet trouvé avec le nom: " + projectName);
+                return jsonUtils.toJson(result);
+            }
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
 }

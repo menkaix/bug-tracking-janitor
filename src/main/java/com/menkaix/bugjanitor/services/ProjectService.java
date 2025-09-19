@@ -56,6 +56,14 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
+    public Optional<Project> findByProjectCode(String projectCode) {
+        return projectRepository.findByProjectCode(projectCode);
+    }
+
+    public Optional<Project> findByProjectName(String projectName) {
+        return projectRepository.findByProjectName(projectName);
+    }
+
     public Page<Project> findAll(Pageable pageable, String search, String filter) {
         Query query = new Query().with(pageable);
         Criteria criteria = new Criteria();
