@@ -34,6 +34,10 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
+    public Optional<Task> findByTrackingReference(String trackingReference) {
+        return taskRepository.findByTrackingReference(trackingReference);
+    }
+
     public Task update(Task taskDetails) {
         Task task = taskRepository.findById(taskDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + taskDetails.getId()));

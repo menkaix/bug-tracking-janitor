@@ -23,6 +23,11 @@ public class Task {
     private String description ;
     private String status ;
 
+    private String estimate ;
+    private String trackingReference ;
+
+
+
     public Task(){
         creationDate = new Date() ;
     }
@@ -104,6 +109,21 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getEstimate() {
+        return estimate;
+    }
+
+    public void setEstimate(String estimate) {
+        this.estimate = estimate;
+    }
+
+    public String getTrackingReference() {
+        return trackingReference;
+    }
+
+    public void setTrackingReference(String trackingReference) {
+        this.trackingReference = trackingReference;
     }
 
 }
