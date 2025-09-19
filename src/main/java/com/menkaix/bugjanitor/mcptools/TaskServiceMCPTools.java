@@ -53,6 +53,17 @@ public class TaskServiceMCPTools {
         }
     }
 
+    public Optional<Task> findTaskByTrackingReference(String trackingReference) {
+        try {
+            if (trackingReference == null || trackingReference.trim().isEmpty()) {
+                throw new IllegalArgumentException("La référence de suivi ne peut pas être null ou vide");
+            }
+            return taskService.findByTrackingReference(trackingReference);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche de la tâche par référence de suivi: " + e.getMessage(), e);
+        }
+    }
+
     public Task updateTask(String taskJson) {
         try {
             if (taskJson == null || taskJson.trim().isEmpty()) {

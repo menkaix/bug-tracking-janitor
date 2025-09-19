@@ -26,7 +26,7 @@ public class ProjectToolsRegistry {
         this.jsonUtils = jsonUtils;
     }
 
-    @Tool(name = "create-project", description = "Creates a project from JSON. Expected format: {\"projectName\":\"name\",\"projectCode\":\"code\",\"description\":\"desc\"}")
+    @Tool(name = "create-project", description = "Creates a new project from JSON input. Required fields: projectName (string, display name), projectCode (string, unique identifier), description (string, project details). Returns the created project with auto-generated ID. Example: {\"projectName\":\"Bug Tracker\",\"projectCode\":\"BT001\",\"description\":\"Main bug tracking system\"}")
     public String createProject(String projectJson) {
         try {
             Project project = projectServiceTools.createProject(projectJson);
@@ -38,7 +38,7 @@ public class ProjectToolsRegistry {
         }
     }
 
-    @Tool(name = "find-project-by-id", description = "Finds a project by its ID")
+    @Tool(name = "find-project-by-id", description = "Retrieves a specific project by its unique identifier. Parameter: id (string, required, project identifier). Returns the complete project object if found, or an error message if the project doesn't exist.")
     public String findProjectById(String id) {
         try {
             Optional<Project> project = projectServiceTools.findProjectById(id);
@@ -56,7 +56,7 @@ public class ProjectToolsRegistry {
         }
     }
 
-    @Tool(name = "update-project", description = "Updates a project from JSON. Expected format: {\"id\":\"projectId\",\"projectName\":\"name\",\"projectCode\":\"code\",\"description\":\"desc\"}")
+    @Tool(name = "update-project", description = "Updates an existing project with new data from JSON input. Required field: id (string, project identifier). Updatable fields: projectName (string, display name), projectCode (string, unique identifier), description (string, project details). Returns the updated project. Example: {\"id\":\"507f1f77bcf86cd799439011\",\"projectName\":\"Updated Name\",\"projectCode\":\"BT002\",\"description\":\"Updated description\"}")
     public String updateProject(String projectDetails) {
         try {
             Project project = projectServiceTools.updateProject(projectDetails);
@@ -68,7 +68,7 @@ public class ProjectToolsRegistry {
         }
     }
 
-    @Tool(name = "delete-project", description = "Deletes a project by its ID")
+    @Tool(name = "delete-project", description = "Permanently removes a project from the system. Parameter: id (string, required, project identifier). Returns a confirmation message upon successful deletion or an error if the project doesn't exist. Warning: This action cannot be undone.")
     public String deleteProject(String id) {
         try {
             String result = projectServiceTools.deleteProject(id);
@@ -82,7 +82,7 @@ public class ProjectToolsRegistry {
         }
     }
 
-    @Tool(name = "find-projects", description = "Finds projects with pagination. Parameters: page (default 0), size (default 10), search (optional), filter (optional in format 'key:value')")
+    @Tool(name = "find-projects", description = "Retrieves projects with pagination, search, and filtering capabilities. Parameters: page (int, default 0, zero-based page number), size (int, default 10, max 100, number of items per page), search (string, optional, searches in projectName and description), filter (string, optional, format 'fieldName:value' for exact matching). Returns paginated results with project list, total count, page info, and navigation flags.")
     public String findProjects(int page, int size, String search, String filter) {
         try {
             // Valeurs par défaut
