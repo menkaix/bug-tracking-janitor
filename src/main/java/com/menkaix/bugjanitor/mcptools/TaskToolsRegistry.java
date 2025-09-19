@@ -1,7 +1,6 @@
 package com.menkaix.bugjanitor.mcptools;
 
 import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +19,12 @@ public class TaskToolsRegistry {
     private final TaskServiceMCPTools taskServiceTools;
     private final Gson jsonUtils;
 
-    @Autowired
     public TaskToolsRegistry(TaskServiceMCPTools tools, Gson jsonUtils) {
         taskServiceTools = tools;
         this.jsonUtils = jsonUtils;
     }
 
-    @Tool(name = "create-task", description = "Creates a task from JSON. Fields available: title, description, projectCode (referencing an existing project), deadLine (ISO-8601), status")
+    @Tool(name = "create-task", description = "Creates a task from JSON. Fields available: title, description, projectCode (referencing an existing project), plannedStart (ISO-8601), deadLine (ISO-8601), status")
     public String createTask(String taskJson) {
         try {
             Task task = taskServiceTools.createTask(taskJson);

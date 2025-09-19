@@ -16,11 +16,16 @@ public class Task {
     private Date updateDate ;
     private Date doneDate ;
 
+    private Date plannedStart ;
     private Date deadLine ;
 
     private String title ;
     private String description ;
     private String status ;
+
+    public Task(){
+        creationDate = new Date() ;
+    }
 
     public String getId() {
         return id;
@@ -83,6 +88,14 @@ public class Task {
 
     public void setDoneDate(Date doneDate) {
         this.doneDate = doneDate;
+    }
+
+    public Date getPlannedStart() {
+        return plannedStart;
+    }
+
+    public void setPlannedStart(Date plannedStart) {
+        this.plannedStart = plannedStart;
     }
 
     public String getStatus() {
