@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.menkaix.bugjanitor.models.documents.Task;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -120,6 +121,72 @@ public class TaskToolsRegistry {
             result.put("hasNext", tasks.hasNext());
             result.put("hasPrevious", tasks.hasPrevious());
 
+            return jsonUtils.toJson(result);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
+
+    @Tool(name = "find-overdue-tasks", description = "Retrieves all tasks that are overdue (deadline has passed and task is not completed). Returns a list of tasks with their details including deadline dates. No parameters required.")
+    public String findOverdueTasks() {
+        try {
+            List<Task> overdueTasks = taskServiceTools.findOverdueTasks();
+            Map<String, Object> result = new HashMap<>();
+            result.put("tasks", overdueTasks);
+            result.put("count", overdueTasks.size());
+            result.put("message", "Tâches en retard trouvées");
+            return jsonUtils.toJson(result);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
+
+    @Tool(name = "find-upcoming-tasks", description = "Retrieves all tasks with deadlines in the next 7 days that are not yet completed. Useful for planning and prioritization. Returns a list of tasks with their deadline information. No parameters required.")
+    public String findUpcomingTasks() {
+        try {
+            List<Task> upcomingTasks = taskServiceTools.findUpcomingTasks();
+            Map<String, Object> result = new HashMap<>();
+            result.put("tasks", upcomingTasks);
+            result.put("count", upcomingTasks.size());
+            result.put("message", "Tâches à venir dans les 7 prochains jours");
+            return jsonUtils.toJson(result);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
+
+    @Tool(name = "find-tasks-by-status", description = "Retrieves all tasks with a specific status. Parameter: status (string, required, task status to filter by). Common statuses include 'TODO', 'IN_PROGRESS', 'DONE', 'BLOCKED', etc. Returns a list of tasks matching the specified status.")
+    public String findTasksByStatus(String status) {
+        try {
+            List<Task> tasks = taskServiceTools.findTasksByStatus(status);
+            Map<String, Object> result = new HashMap<>();
+            result.put("tasks", tasks);
+            result.put("count", tasks.size());
+            result.put("status", status);
+            result.put("message", "Tâches trouvées avec le statut: " + status);
+            return jsonUtils.toJson(result);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return jsonUtils.toJson(error);
+        }
+    }
+
+    @Tool(name = "find-tasks-by-project", description = "Retrieves all tasks associated with a specific project. Parameter: projectCode (string, required, project code to filter tasks by). Returns a list of tasks belonging to the specified project with their complete details.")
+    public String findTasksByProject(String projectCode) {
+        try {
+            List<Task> tasks = taskServiceTools.findTasksByProjectCode(projectCode);
+            Map<String, Object> result = new HashMap<>();
+            result.put("tasks", tasks);
+            result.put("count", tasks.size());
+            result.put("projectCode", projectCode);
+            result.put("message", "Tâches trouvées pour le projet: " + projectCode);
             return jsonUtils.toJson(result);
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();

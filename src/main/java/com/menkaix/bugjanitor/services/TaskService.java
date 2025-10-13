@@ -12,6 +12,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,6 +91,31 @@ public class TaskService {
                 mongoTemplate.find(query, Task.class),
                 pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Task.class));
+    }
+
+    public List<Task> findByProjectCode(String projectCode) {
+        Query query = new Query(Criteria.where("projectCode").is(projectCode));
+        return mongoTemplate.find(query, Task.class);
+    }
+
+    public List<Task> findByStatus(String status) {
+        Query query = new Query(Criteria.where("status").is(status));
+        return mongoTemplate.find(query, Task.class);
+    }
+
+    public List<Task> findOverdueTasks() {
+        Date now = new Date();
+        Query query = new Query(Criteria.where("deadLine").lt(now)
+                .and("doneDate").exists(false));
+        return mongoTemplate.find(query, Task.class);
+    }
+
+    public List<Task> findUpcomingTasks() {
+        Date now = new Date();
+        Date sevenDaysFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+        Query query = new Query(Criteria.where("deadLine").gte(now).lte(sevenDaysFromNow)
+                .and("doneDate").exists(false));
+        return mongoTemplate.find(query, Task.class);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -113,6 +114,44 @@ public class TaskServiceMCPTools {
             return taskService.findAll(pageable, search, filter);
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors de la recherche des tâches: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Task> findOverdueTasks() {
+        try {
+            return taskService.findOverdueTasks();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche des tâches en retard: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Task> findUpcomingTasks() {
+        try {
+            return taskService.findUpcomingTasks();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche des tâches à venir: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Task> findTasksByStatus(String status) {
+        try {
+            if (status == null || status.trim().isEmpty()) {
+                throw new IllegalArgumentException("Le statut ne peut pas être null ou vide");
+            }
+            return taskService.findByStatus(status);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche des tâches par statut: " + e.getMessage(), e);
+        }
+    }
+
+    public List<Task> findTasksByProjectCode(String projectCode) {
+        try {
+            if (projectCode == null || projectCode.trim().isEmpty()) {
+                throw new IllegalArgumentException("Le code du projet ne peut pas être null ou vide");
+            }
+            return taskService.findByProjectCode(projectCode);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la recherche des tâches par projet: " + e.getMessage(), e);
         }
     }
 }
