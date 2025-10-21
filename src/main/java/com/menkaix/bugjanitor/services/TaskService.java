@@ -55,6 +55,24 @@ public class TaskService {
         if (taskDetails.getProjectCode() != null) {
             task.setProjectCode(taskDetails.getProjectCode());
         }
+        if (taskDetails.getStatus() != null) {
+            task.setStatus(taskDetails.getStatus());
+        }
+        if (taskDetails.getEstimate() != null) {
+            task.setEstimate(taskDetails.getEstimate());
+        }
+        if (taskDetails.getPlannedStart() != null) {
+            task.setPlannedStart(taskDetails.getPlannedStart());
+        }
+        if (taskDetails.getDoneDate() != null) {
+            task.setDoneDate(taskDetails.getDoneDate());
+        }
+        if (taskDetails.getTrackingReference() != null) {
+            task.setTrackingReference(taskDetails.getTrackingReference());
+        }
+
+        // Mettre à jour automatiquement la date de modification
+        task.setUpdateDate(new java.util.Date());
 
         Task savedTask = taskRepository.save(task);
 
