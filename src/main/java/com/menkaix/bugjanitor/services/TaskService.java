@@ -56,8 +56,9 @@ public class TaskService {
             task.setProjectCode(taskDetails.getProjectCode());
         }
 
+        Task savedTask = taskRepository.save(task);
 
-        return taskRepository.save(task);
+        return savedTask ;
     }
 
     public void delete(String id) {
