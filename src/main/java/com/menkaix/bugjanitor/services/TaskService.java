@@ -1,5 +1,7 @@
 package com.menkaix.bugjanitor.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.menkaix.bugjanitor.models.documents.Task;
 import com.menkaix.bugjanitor.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class TaskService {
         Task task = taskRepository.findById(taskDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + taskDetails.getId()));
 
+
+
         // Mettre à jour les champs
         if (taskDetails.getTitle() != null) {
             task.setTitle(taskDetails.getTitle());
@@ -57,9 +61,28 @@ public class TaskService {
         if (taskDetails.getProjectCode() != null) {
             task.setProjectCode(taskDetails.getProjectCode());
         }
+        if (taskDetails.getStatus() != null) {
+            task.setStatus(taskDetails.getStatus());
+        }
+        if (taskDetails.getEstimate() != null) {
+            task.setEstimate(taskDetails.getEstimate());
+        }
+        if (taskDetails.getPlannedStart() != null) {
+            task.setPlannedStart(taskDetails.getPlannedStart());
+        }
+        if (taskDetails.getDoneDate() != null) {
+            task.setDoneDate(taskDetails.getDoneDate());
+        }
+        if (taskDetails.getTrackingReference() != null) {
+            task.setTrackingReference(taskDetails.getTrackingReference());
+        }
 
+        // Mettre à jour automatiquement la date de modification
+        task.setUpdateDate(new java.util.Date());
 
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        return savedTask ;
     }
 
     public void delete(String id) {
