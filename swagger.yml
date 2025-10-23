@@ -1,0 +1,689 @@
+openapi: 3.0.3
+info:
+  title: Bug Tracking Janitor API
+  description: |
+    API REST pour la gestion des tâches et projets dans le système Bug Tracking Janitor.
+
+    Cette API permet de gérer:
+    - Les tâches (tasks) avec leur suivi et statut
+    - Les projets avec leur code et description
+
+  version: 1.0.0
+  contact:
+    name: Menkaix
+    email: support@menkaix.com
+
+servers:
+  - url: http://localhost:3000
+    description: Serveur de développement local
+  - url: https://api.menkaix.com
+    description: Serveur de production
+
+tags:
+  - name: Root
+    description: Endpoints de base
+  - name: Tasks
+    description: Gestion des tâches
+  - name: Projects
+    description: Gestion des projets
+
+paths:
+  /:
+    get:
+      tags:
+        - Root
+      summary: Endpoint racine
+      description: Retourne un message de bienvenue
+      operationId: getRoot
+      responses:
+        '200':
+          description: Message de bienvenue
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Hello, World!"
+
+  /task:
+    get:
+      tags:
+        - Tasks
+      summary: Récupérer toutes les tâches
+      description: Retourne une liste paginée de tâches avec possibilité de recherche et filtrage
+      operationId: getAllTasks
+      parameters:
+        - name: page
+          in: query
+          description: Numéro de la page (commence à 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Nombre d'éléments par page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: sort
+          in: query
+          description: Critère de tri (ex. title,asc ou creationDate,desc)
+          required: false
+          schema:
+            type: string
+            example: "creationDate,desc"
+        - name: search
+          in: query
+          description: Terme de recherche (recherche dans title, projectCode, description)
+          required: false
+          schema:
+            type: string
+            example: "bug fix"
+        - name: filter
+          in: query
+          description: Filtre au format key:value (ex. status:IN_PROGRESS)
+          required: false
+          schema:
+            type: string
+            example: "status:IN_PROGRESS"
+      responses:
+        '200':
+          description: Liste des tâches récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageTask'
+
+    post:
+      tags:
+        - Tasks
+      summary: Créer une nouvelle tâche
+      description: Crée une nouvelle tâche dans le système
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '200':
+          description: Tâche créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Données invalides
+
+  /task/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Récupérer une tâche par son ID
+      description: Retourne les détails d'une tâche spécifique
+      operationId: getTaskById
+      parameters:
+        - name: id
+          in: path
+          description: ID de la tâche
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        '200':
+          description: Tâche trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tâche non trouvée
+
+    put:
+      tags:
+        - Tasks
+      summary: Mettre à jour une tâche
+      description: Met à jour les informations d'une tâche existante
+      operationId: updateTask
+      parameters:
+        - name: id
+          in: path
+          description: ID de la tâche à mettre à jour
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '200':
+          description: Tâche mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tâche non trouvée
+        '400':
+          description: Données invalides
+
+    delete:
+      tags:
+        - Tasks
+      summary: Supprimer une tâche
+      description: Supprime une tâche du système
+      operationId: deleteTask
+      parameters:
+        - name: id
+          in: path
+          description: ID de la tâche à supprimer
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        '204':
+          description: Tâche supprimée avec succès
+        '404':
+          description: Tâche non trouvée
+
+  /project:
+    get:
+      tags:
+        - Projects
+      summary: Récupérer tous les projets
+      description: Retourne une liste paginée de projets avec possibilité de recherche et filtrage
+      operationId: getAllProjects
+      parameters:
+        - name: page
+          in: query
+          description: Numéro de la page (commence à 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Nombre d'éléments par page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: sort
+          in: query
+          description: Critère de tri (ex. projectName,asc)
+          required: false
+          schema:
+            type: string
+            example: "projectName,asc"
+        - name: search
+          in: query
+          description: Terme de recherche (recherche dans projectName, projectCode, description)
+          required: false
+          schema:
+            type: string
+            example: "frontend"
+        - name: filter
+          in: query
+          description: Filtre au format key:value
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des projets récupérée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProject'
+
+    post:
+      tags:
+        - Projects
+      summary: Créer un nouveau projet
+      description: Crée un nouveau projet dans le système
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: Projet créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Données invalides
+
+  /project/{id}:
+    get:
+      tags:
+        - Projects
+      summary: Récupérer un projet par son ID
+      description: Retourne les détails d'un projet spécifique
+      operationId: getProjectById
+      parameters:
+        - name: id
+          in: path
+          description: ID du projet
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        '200':
+          description: Projet trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+
+    put:
+      tags:
+        - Projects
+      summary: Mettre à jour un projet
+      description: Met à jour les informations d'un projet existant
+      operationId: updateProject
+      parameters:
+        - name: id
+          in: path
+          description: ID du projet à mettre à jour
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: Projet mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+        '400':
+          description: Données invalides
+
+    delete:
+      tags:
+        - Projects
+      summary: Supprimer un projet
+      description: Supprime un projet du système
+      operationId: deleteProject
+      parameters:
+        - name: id
+          in: path
+          description: ID du projet à supprimer
+          required: true
+          schema:
+            type: string
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        '204':
+          description: Projet supprimé avec succès
+        '404':
+          description: Projet non trouvé
+
+  /project/code/{projectCode}:
+    get:
+      tags:
+        - Projects
+      summary: Récupérer un projet par son code
+      description: Retourne un projet en recherchant par son code unique
+      operationId: getProjectByCode
+      parameters:
+        - name: projectCode
+          in: path
+          description: Code unique du projet
+          required: true
+          schema:
+            type: string
+            example: "PROJ-001"
+      responses:
+        '200':
+          description: Projet trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+
+  /project/name/{projectName}:
+    get:
+      tags:
+        - Projects
+      summary: Récupérer un projet par son nom
+      description: Retourne un projet en recherchant par son nom
+      operationId: getProjectByName
+      parameters:
+        - name: projectName
+          in: path
+          description: Nom du projet
+          required: true
+          schema:
+            type: string
+            example: "Frontend Application"
+      responses:
+        '200':
+          description: Projet trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique de la tâche (généré par MongoDB)
+          example: "507f1f77bcf86cd799439011"
+        projectCode:
+          type: string
+          description: Code du projet auquel appartient la tâche
+          example: "PROJ-001"
+        creationDate:
+          type: string
+          format: date-time
+          description: Date de création de la tâche
+          example: "2025-10-23T10:30:00Z"
+        updateDate:
+          type: string
+          format: date-time
+          description: Date de dernière mise à jour
+          example: "2025-10-23T15:45:00Z"
+          nullable: true
+        doneDate:
+          type: string
+          format: date-time
+          description: Date de complétion de la tâche
+          example: "2025-10-24T12:00:00Z"
+          nullable: true
+        plannedStart:
+          type: string
+          format: date-time
+          description: Date de début planifiée
+          example: "2025-10-25T09:00:00Z"
+          nullable: true
+        deadLine:
+          type: string
+          format: date-time
+          description: Date limite de la tâche
+          example: "2025-10-30T17:00:00Z"
+          nullable: true
+        title:
+          type: string
+          description: Titre de la tâche
+          example: "Corriger le bug d'authentification"
+        description:
+          type: string
+          description: Description détaillée de la tâche
+          example: "Les utilisateurs ne peuvent pas se connecter après le dernier déploiement"
+          nullable: true
+        status:
+          type: string
+          description: Statut actuel de la tâche
+          example: "IN_PROGRESS"
+          enum:
+            - TODO
+            - IN_PROGRESS
+            - DONE
+            - BLOCKED
+          nullable: true
+        estimate:
+          type: string
+          description: Estimation du temps nécessaire
+          example: "4h"
+          nullable: true
+        trackingReference:
+          type: string
+          description: Référence de suivi externe (ex. numéro de ticket)
+          example: "JIRA-1234"
+          nullable: true
+
+    TaskRequest:
+      type: object
+      properties:
+        projectCode:
+          type: string
+          description: Code du projet
+          example: "PROJ-001"
+        deadLine:
+          type: string
+          format: date-time
+          description: Date limite
+          example: "2025-10-30T17:00:00Z"
+        plannedStart:
+          type: string
+          format: date-time
+          description: Date de début planifiée
+          example: "2025-10-25T09:00:00Z"
+        doneDate:
+          type: string
+          format: date-time
+          description: Date de complétion
+          example: "2025-10-24T12:00:00Z"
+        title:
+          type: string
+          description: Titre de la tâche
+          example: "Corriger le bug d'authentification"
+        description:
+          type: string
+          description: Description détaillée
+          example: "Les utilisateurs ne peuvent pas se connecter"
+        status:
+          type: string
+          description: Statut de la tâche
+          example: "IN_PROGRESS"
+        estimate:
+          type: string
+          description: Estimation du temps
+          example: "4h"
+        trackingReference:
+          type: string
+          description: Référence de suivi
+          example: "JIRA-1234"
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant unique du projet (généré par MongoDB)
+          example: "507f1f77bcf86cd799439011"
+        projectName:
+          type: string
+          description: Nom du projet
+          example: "Frontend Application"
+        projectCode:
+          type: string
+          description: Code unique du projet
+          example: "PROJ-001"
+        description:
+          type: string
+          description: Description du projet
+          example: "Application web frontend pour la gestion des utilisateurs"
+          nullable: true
+
+    ProjectRequest:
+      type: object
+      properties:
+        projectName:
+          type: string
+          description: Nom du projet
+          example: "Frontend Application"
+        projectCode:
+          type: string
+          description: Code unique du projet
+          example: "PROJ-001"
+        description:
+          type: string
+          description: Description du projet
+          example: "Application web frontend pour la gestion des utilisateurs"
+
+    PageTask:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: Liste des tâches de la page courante
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        totalElements:
+          type: integer
+          format: int64
+          description: Nombre total d'éléments
+          example: 150
+        totalPages:
+          type: integer
+          description: Nombre total de pages
+          example: 8
+        last:
+          type: boolean
+          description: Indique si c'est la dernière page
+          example: false
+        size:
+          type: integer
+          description: Taille de la page
+          example: 20
+        number:
+          type: integer
+          description: Numéro de la page courante
+          example: 0
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          description: Nombre d'éléments dans la page courante
+          example: 20
+        first:
+          type: boolean
+          description: Indique si c'est la première page
+          example: true
+        empty:
+          type: boolean
+          description: Indique si la page est vide
+          example: false
+
+    PageProject:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+          description: Liste des projets de la page courante
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        totalElements:
+          type: integer
+          format: int64
+          description: Nombre total d'éléments
+          example: 50
+        totalPages:
+          type: integer
+          description: Nombre total de pages
+          example: 3
+        last:
+          type: boolean
+          description: Indique si c'est la dernière page
+          example: false
+        size:
+          type: integer
+          description: Taille de la page
+          example: 20
+        number:
+          type: integer
+          description: Numéro de la page courante
+          example: 0
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          description: Nombre d'éléments dans la page courante
+          example: 20
+        first:
+          type: boolean
+          description: Indique si c'est la première page
+          example: true
+        empty:
+          type: boolean
+          description: Indique si la page est vide
+          example: false
+
+    Pageable:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        offset:
+          type: integer
+          format: int64
+          example: 0
+        pageNumber:
+          type: integer
+          example: 0
+        pageSize:
+          type: integer
+          example: 20
+        paged:
+          type: boolean
+          example: true
+        unpaged:
+          type: boolean
+          example: false
+
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+          example: true
+        unsorted:
+          type: boolean
+          example: false
+        empty:
+          type: boolean
+          example: false
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Clé API pour l'authentification
+
+security:
+  - ApiKeyAuth: []

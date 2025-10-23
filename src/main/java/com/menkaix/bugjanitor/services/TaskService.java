@@ -1,5 +1,7 @@
 package com.menkaix.bugjanitor.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.menkaix.bugjanitor.models.documents.Task;
 import com.menkaix.bugjanitor.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ public class TaskService {
     public Task update(Task taskDetails) {
         Task task = taskRepository.findById(taskDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + taskDetails.getId()));
+
+
 
         // Mettre à jour les champs
         if (taskDetails.getTitle() != null) {

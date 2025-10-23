@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.menkaix.bugjanitor.services.ProjectService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.menkaix.bugjanitor.models.documents.Project;
 import org.springframework.beans.factory.annotation.Autowired;
