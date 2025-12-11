@@ -7,14 +7,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin
-@ComponentScan(basePackages = {
-		"com.menkaix.bugjanitor.controllers",
-		"com.menkaix.bugjanitor.services",
-		"com.menkaix.bugjanitor.mcptools",
-		"com.menkaix.bugjanitor.configuration",
-		"com.menkaix.bugjanitor.security",
-		"com.menkaix.bugjanitor.utils"
-})
 @EnableMongoRepositories("com.menkaix.bugjanitor.repositories")
 @SpringBootApplication
 public class BugjanitorApplication {
