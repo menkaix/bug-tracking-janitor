@@ -76,6 +76,9 @@ public class TaskService {
         if (taskDetails.getTrackingReference() != null) {
             task.setTrackingReference(taskDetails.getTrackingReference());
         }
+        if (taskDetails.getAssignee() != null) {
+            task.setAssignee(taskDetails.getAssignee());
+        }
 
         // Mettre à jour automatiquement la date de modification
         task.setUpdateDate(new java.util.Date());

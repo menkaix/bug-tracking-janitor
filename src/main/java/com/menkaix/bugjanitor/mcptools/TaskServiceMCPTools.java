@@ -86,6 +86,9 @@ public class TaskServiceMCPTools {
             if (taskDetails.getDescription() != null) {
                 existingTask.setDescription(taskDetails.getDescription());
             }
+            if (taskDetails.getAssignee() != null) {
+                existingTask.setAssignee(taskDetails.getAssignee());
+            }
 
             return taskService.update(existingTask);
         } catch (Exception e) {

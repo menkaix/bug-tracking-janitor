@@ -25,6 +25,7 @@ public class Task {
 
     private String estimate ;
     private String trackingReference ;
+    private String assignee ;
 
 
 
@@ -124,6 +125,14 @@ public class Task {
 
     public void setTrackingReference(String trackingReference) {
         this.trackingReference = trackingReference;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
     }
 
 }
