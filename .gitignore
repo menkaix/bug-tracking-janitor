@@ -42,3 +42,6 @@ out/
 ### custom ###
 application-local.properties
 /.claude
+gradlew
+gradlew.bat
+gradle/

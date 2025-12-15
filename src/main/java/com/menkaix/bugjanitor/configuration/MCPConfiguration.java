@@ -1,5 +1,6 @@
 package com.menkaix.bugjanitor.configuration;
 
+import com.menkaix.bugjanitor.mcp.prompts.MCPPromptTemplates;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
